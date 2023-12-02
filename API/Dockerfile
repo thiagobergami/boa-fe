@@ -7,7 +7,7 @@ RUN dotnet restore
 
 COPY . .
 
-CMD ["dotnet", "watch", "run", "--urls", "http://0.0.0.0:5198", "--project", "API/API.csproj"]
+CMD ["dotnet", "watch", "run", "--project", "API/API.csproj"]
 
 # WORKDIR /app/API
 # RUN dotnet build -c Release -o out

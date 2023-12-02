@@ -23,4 +23,7 @@ public class ClientsController : ControllerBase
 
         return clients;
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Clients>> GetClient(int id) => await _context.Clients.FindAsync(id);
 }
