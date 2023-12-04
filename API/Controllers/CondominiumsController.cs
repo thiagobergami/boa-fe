@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")] 
+[Route("api/[controller]")]
 public class CondominiumsController : ControllerBase
 {
     private readonly CondominiumsService _service;
 
-    public CondominiumsController(CondominiumsService service){
+    public CondominiumsController(CondominiumsService service)
+    {
         _service = service;
     }
 
@@ -35,6 +36,28 @@ public class CondominiumsController : ControllerBase
         else
         {
             return BadRequest("Failed to create client");
-        }        
+        }
+    }
+
+    [HttpPost("{condominiumId}/associate-units")]
+    public async Task<ActionResult> AssociateUnits(int condominiumId, [FromBody] List<int> unitIds)
+    {
+        var condominium = await _service.GetCondominiumsById(condominiumId);
+
+        if (condominium == null)
+        {
+            return NotFound("Condominum not found");
+        }
+
+        var unitAssociated = await _service.AssociateUnitsWithCondominium(condominiumId, unitIds);
+
+        if (unitAssociated)
+        {
+            return Created($"Units associated with Condominium {condominiumId} successfully", null);
+        }
+        else
+        {
+            return BadRequest("Failed to create client");
+        }
     }
 }
