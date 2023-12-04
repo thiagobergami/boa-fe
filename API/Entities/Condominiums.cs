@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace API.Entities;
 
-public class Clients
-{
-    public Clients()
+public class Condominiums
+{   
+    public Condominiums()
     {
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
@@ -14,21 +14,14 @@ public class Clients
     public int Id { get; set; }
 
     [Required]
-    public required string Name { get; set; }
-    [Required]
-    public required int Age { get; set; }
-
-    public required string Email { get; set; }
+    public string Name { get; set; }
 
     [JsonIgnore]
-    public List<Units> RentUnits { get; set; }
+    public List<Units> Units {get; set;}
 
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
 
     [Column("created_at")]
-    public DateTime CreatedAt { get; set; }
-    [JsonIgnore]
-    public ICollection<Properties> Properties { get; set; }
-
+    public DateTime CreatedAt {get; set;}
 }

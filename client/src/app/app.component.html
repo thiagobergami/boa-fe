@@ -1,1 +1,7 @@
 <h1>{{title}}</h1>
+
+<ul>
+    <li *ngFor="let client of clients">
+        {{client.id}} - {{client.name}} - {{client.age}}
+    </li>
+</ul>

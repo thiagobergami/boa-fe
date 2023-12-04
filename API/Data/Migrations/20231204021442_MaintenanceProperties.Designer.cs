@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231204021442_MaintenanceProperties")]
+    partial class MaintenanceProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,11 +47,16 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PropertyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Clients");
                 });
@@ -113,24 +121,29 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.Properties", b =>
                 {
-                    b.Property<int>("ClientId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UnitId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("Id")
+                    b.Property<int?>("UnitId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("ClientId", "UnitId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("UnitId");
 
@@ -149,6 +162,9 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CondominiumId")
                         .HasColumnType("int");
 
@@ -160,7 +176,7 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TenantClientId")
+                    b.Property<int?>("PropertyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TenantFinishedAt")
@@ -175,11 +191,22 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId");
+
                     b.HasIndex("CondominiumId");
 
-                    b.HasIndex("TenantClientId");
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("API.Entities.Clients", b =>
+                {
+                    b.HasOne("API.Entities.Properties", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId");
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("API.Entities.Maintenances", b =>
@@ -196,43 +223,43 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Properties", b =>
                 {
                     b.HasOne("API.Entities.Clients", "Client")
-                        .WithMany("Properties")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ClientId");
 
-                    b.HasOne("API.Entities.Units", "Unit")
-                        .WithMany("Properties")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("API.Entities.Units", "Units")
+                        .WithMany()
+                        .HasForeignKey("UnitId");
 
                     b.Navigation("Client");
 
-                    b.Navigation("Unit");
+                    b.Navigation("Units");
                 });
 
             modelBuilder.Entity("API.Entities.Units", b =>
                 {
+                    b.HasOne("API.Entities.Clients", "TenantClient")
+                        .WithMany("RentUnits")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("API.Entities.Condominiums", "Condominium")
                         .WithMany("Units")
                         .HasForeignKey("CondominiumId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("API.Entities.Clients", "TenantClient")
-                        .WithMany("RentUnits")
-                        .HasForeignKey("TenantClientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("API.Entities.Properties", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId");
 
                     b.Navigation("Condominium");
+
+                    b.Navigation("Property");
 
                     b.Navigation("TenantClient");
                 });
 
             modelBuilder.Entity("API.Entities.Clients", b =>
                 {
-                    b.Navigation("Properties");
-
                     b.Navigation("RentUnits");
                 });
 
@@ -244,8 +271,6 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Units", b =>
                 {
                     b.Navigation("Maintenances");
-
-                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }
