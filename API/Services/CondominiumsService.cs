@@ -1,4 +1,5 @@
 ﻿using API.Data;
+using API.DTO;
 using API.Entities;
 
 namespace API.Services;
@@ -18,9 +19,16 @@ public class CondominiumsService
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<Condominiums> GetCondominiumsById(int id)
+    public async Task<CondominiumDTO> GetCondominiumsById(int id)
     {
-        return await _context.Condominiums.FindAsync(id); ;
+        var condominium = await _context.Condominiums.FindAsync(id);
+        var condominiumDTO = new CondominiumDTO{
+            Id = condominium.Id,
+            Name = condominium.Name,
+            Units = GetUnitsByCondominumId(condominium.Id)
+        };
+
+        return condominiumDTO;
     }
 
     public async Task<bool> AssociateUnitsWithCondominium(int condominiumId, List<int> unitIds)
@@ -46,6 +54,17 @@ public class CondominiumsService
             //Jogar esse ex em alguma ferramenta de Log
             return false; 
         }
+    }
 
+    public List<CondominumUnitDTO> GetUnitsByCondominumId(int condominiumId){
+        var units = _context.Units
+            .Where(unit => unit.CondominiumId == condominiumId)
+            .Select(unit => new CondominumUnitDTO{
+                Id = unit.Id,
+                Name = unit.Name,
+                Address = unit.Adress,
+            }).ToList();
+        
+        return units;
     }
 }

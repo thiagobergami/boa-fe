@@ -60,4 +60,17 @@ public class CondominiumsController : ControllerBase
             return BadRequest("Failed to create client");
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult> GetCondominum(int id)
+    {
+        var condominium = await _service.GetCondominiumsById(id);
+
+        if (condominium == null)
+        {
+            return NotFound("Condominum not found");
+        }
+
+        return Ok(condominium);
+    }
 }
