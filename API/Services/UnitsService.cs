@@ -32,12 +32,18 @@ public class UnitsService
         return unit;
     }
 
+    public async Task<int> RentUnit(Units unit)
+    {   
+        _context.Entry(unit).State = EntityState.Modified;
+        return await _context.SaveChangesAsync();
+    }
+
     public List<UnitsDTO> MapToDto(List<Units> units){
         return units.Select(unit => new UnitsDTO{
             Id = unit.Id,
             Name = unit.Name,
             Address = unit.Adress,
-            TenantClient = unit.TenantClient,
+            TenantClientId = unit.TenantClientId,
             TenantStartedAt = unit.TenantStartedAt,
             TenantFinishedAt = unit.TenantFinishedAt,
             Maintenances = GetMaintenancesByUnitId(unit.Id),
