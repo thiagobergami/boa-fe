@@ -7,14 +7,17 @@ public class DataContext : DbContext
 {
     public DataContext(DbContextOptions options) : base(options)
     {
-
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.LogTo(Console.WriteLine);
+    }
     public DbSet<Clients> Clients { get; set; }
     public DbSet<Units> Units { get; set; }
     public DbSet<Condominiums> Condominiums { get; set; }
-
     public DbSet<Maintenances> Maintenances { get; set; }
+    public DbSet<Properties> Properties { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

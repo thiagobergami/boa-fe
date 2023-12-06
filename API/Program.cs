@@ -20,6 +20,7 @@ builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<CondominiumsService>();
 builder.Services.AddScoped<UnitsService>();
 builder.Services.AddScoped<MaintenancesService>();
+builder.Services.AddScoped<PropertiesService>();
 
 var app = builder.Build();
 
