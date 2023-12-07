@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// <copyright file="Clients.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,13 +12,15 @@ public class Clients
 {
     public Clients()
     {
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
+        this.CreatedAt = DateTime.UtcNow;
+        this.UpdatedAt = DateTime.UtcNow;
     }
+
     public int Id { get; set; }
 
     [Required]
     public required string Name { get; set; }
+
     [Required]
     public required int Age { get; set; }
 
@@ -28,7 +34,7 @@ public class Clients
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
+
     [JsonIgnore]
     public ICollection<Properties> Properties { get; set; }
-
 }

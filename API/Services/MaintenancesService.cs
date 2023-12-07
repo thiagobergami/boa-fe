@@ -1,19 +1,24 @@
-﻿using API.Data;
+﻿// <copyright file="MaintenancesService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using API.Data;
 using API.Entities;
 
 namespace API.Services;
 
 public class MaintenancesService
 {
-    private readonly DataContext _context;
+    private readonly DataContext context;
+
     public MaintenancesService(DataContext context)
     {
-        _context = context;
+        this.context = context;
     }
 
     public async Task<Maintenances> GetMaintenanceById(int id)
     {
-        return await _context.Maintenances.FindAsync(id);
+        return await this.context.Maintenances.FindAsync(id);
     }
 
     public async Task<int> CreateMaintenance(Maintenances maintenance)
@@ -26,7 +31,7 @@ public class MaintenancesService
         maintenance.CreatedAt = DateTime.UtcNow;
         maintenance.UpdatedAt = DateTime.UtcNow;
 
-        _context.Maintenances.Add(maintenance);
-        return await _context.SaveChangesAsync();
+        this.context.Maintenances.Add(maintenance);
+        return await this.context.SaveChangesAsync();
     }
 }

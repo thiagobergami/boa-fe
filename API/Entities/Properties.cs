@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// <copyright file="Properties.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities;
@@ -14,9 +18,12 @@ public class Properties
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
-    
-    public int UnitId {get; set;}
+
+    public int UnitId { get; set; }
+
     public virtual Units Unit { get; set; }
-    public int ClientId {get; set;}
+
+    public int ClientId { get; set; }
+
     public virtual Clients Client { get; set; }
 }

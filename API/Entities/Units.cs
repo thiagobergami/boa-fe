@@ -1,16 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// <copyright file="Units.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace API.Entities;
 
 public class Units
-{   
+{
     public Units()
     {
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
+        this.CreatedAt = DateTime.UtcNow;
+        this.UpdatedAt = DateTime.UtcNow;
     }
+
     public int Id { get; set; }
 
     [Required]
@@ -22,11 +27,11 @@ public class Units
     [JsonIgnore]
     public int? TenantClientId { get; set; }
 
-    [JsonIgnore]    
+    [JsonIgnore]
     public DateTime TenantStartedAt { get; set; }
 
     [JsonIgnore]
-    public DateTime TenantFinishedAt { get; set; }    
+    public DateTime TenantFinishedAt { get; set; }
 
     [Column("updated_at")]
     public DateTime UpdatedAt { get; set; }
@@ -38,13 +43,14 @@ public class Units
     public int? CondominiumId { get; set; }
 
     [JsonIgnore]
-    public Condominiums Condominium { get; set; }    
+    public Condominiums Condominium { get; set; }
 
     [JsonIgnore]
     public Clients TenantClient { get; set; }
 
     [JsonIgnore]
     public List<Maintenances> Maintenances { get; set; }
+
     [JsonIgnore]
     public ICollection<Properties> Properties { get; set; }
 }

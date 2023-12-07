@@ -1,10 +1,14 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿// <copyright file="20231204021442_MaintenanceProperties.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 #nullable disable
 
 namespace API.Data.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     /// <inheritdoc />
     public partial class MaintenanceProperties : Migration
     {
@@ -33,7 +37,7 @@ namespace API.Data.Migrations
                     ProblemDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsSolved = table.Column<bool>(type: "bit", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    created_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -55,7 +59,7 @@ namespace API.Data.Migrations
                     updated_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UnitId = table.Column<int>(type: "int", nullable: true),
-                    ClientId = table.Column<int>(type: "int", nullable: true)
+                    ClientId = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {

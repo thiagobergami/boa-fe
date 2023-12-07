@@ -1,4 +1,8 @@
-﻿using API.Entities;
+﻿// <copyright file="CondominiumsController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using API.Entities;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,69 +12,71 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class CondominiumsController : ControllerBase
 {
-    private readonly CondominiumsService _service;
+    private readonly CondominiumsService service;
 
     public CondominiumsController(CondominiumsService service)
     {
-        _service = service;
+        this.service = service;
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] Condominiums Condom)
+    public async Task<ActionResult> Create([FromBody] Condominiums condom)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        if (!this.ModelState.IsValid)
+        {
+            return this.BadRequest(this.ModelState);
+        }
 
-        var result = await _service.CreateCondominium(Condom);
+        var result = await this.service.CreateCondominium(condom);
 
         if (result > 0)
         {
-            //That could be a DTO
+            // That could be a DTO
             var response = new
             {
                 message = "Client created successfully",
-                condominium = Condom,
+                condominium = condom,
             };
-            return Created(nameof(Create), response);
+            return this.Created(nameof(this.Create), response);
         }
         else
         {
-            return BadRequest("Failed to create client");
+            return this.BadRequest("Failed to create client");
         }
     }
 
     [HttpPost("{condominiumId}/associate-units")]
     public async Task<ActionResult> AssociateUnits(int condominiumId, [FromBody] List<int> unitIds)
     {
-        var condominium = await _service.GetCondominiumsById(condominiumId);
+        var condominium = await this.service.GetCondominiumsById(condominiumId);
 
         if (condominium == null)
         {
-            return NotFound("Condominum not found");
+            return this.NotFound("Condominum not found");
         }
 
-        var unitAssociated = await _service.AssociateUnitsWithCondominium(condominiumId, unitIds);
+        var unitAssociated = await this.service.AssociateUnitsWithCondominium(condominiumId, unitIds);
 
         if (unitAssociated)
         {
-            return Created($"Units associated with Condominium {condominiumId} successfully", null);
+            return this.Created($"Units associated with Condominium {condominiumId} successfully", null);
         }
         else
         {
-            return BadRequest("Failed to create client");
+            return this.BadRequest("Failed to create client");
         }
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult> GetCondominum(int id)
     {
-        var condominium = await _service.GetCondominiumsById(id);
+        var condominium = await this.service.GetCondominiumsById(id);
 
         if (condominium == null)
         {
-            return NotFound("Condominum not found");
+            return this.NotFound("Condominum not found");
         }
 
-        return Ok(condominium);
+        return this.Ok(condominium);
     }
 }

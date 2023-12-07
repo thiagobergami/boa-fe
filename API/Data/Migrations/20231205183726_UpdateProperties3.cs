@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// <copyright file="20231205183726_UpdateProperties3.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 #nullable disable
 
 namespace API.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     /// <inheritdoc />
     public partial class UpdateProperties3 : Migration
     {
@@ -20,7 +24,8 @@ namespace API.Data.Migrations
                 type: "int",
                 nullable: false)
                 .Annotation("SqlServer:Identity", "1, 1");
-                //.OldAnnotation("SqlServer:Identity", "1, 1");
+
+            // .OldAnnotation("SqlServer:Identity", "1, 1");
 
             /* migrationBuilder.AlterColumn<int>(
                 name: "Id",

@@ -1,4 +1,8 @@
-﻿using API.Data;
+﻿// <copyright file="ClientServiceTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using API.Data;
 using API.Entities;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +15,11 @@ public class ClientServiceTests
     [Fact]
     public async Task ListAllClients_ReturnListOfClients()
     {
-        //Arrange
+        // Arrange
         var clientsData = new List<Clients>
         {
-            new Clients {Id = 1, Name = "Thiago", Age = 20, Email= "thiago@t.com"},
-            new Clients {Id = 2, Name = "Guedes", Age = 20, Email= "guedes@t.com"},
+            new Clients { Id = 1, Name = "Thiago", Age = 20, Email = "thiago@t.com" },
+            new Clients { Id = 2, Name = "Guedes", Age = 20, Email = "guedes@t.com" },
         }.AsQueryable();
 
         var options = new DbContextOptionsBuilder<DataContext>()
@@ -38,18 +42,28 @@ public class ClientServiceTests
             // Assert
             Assert.NotNull(result.Value);
             Assert.IsType<List<Clients>>(result.Value);
-            Assert.Equal(2, result.Value.Count());
+            Assert.Equal(3, result.Value.Count());
         }
     }
 
-
-    private static DbSet<T> MockDbSet<T>(IQueryable<T> data) where T : class
+    [Fact]
+    public async Task CreateClient_ReturnCreatedClient()
     {
-        var mockSet = new Mock<DbSet<T>>();
-        mockSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(data.Provider);
-        mockSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(data.Expression);
-        mockSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(data.ElementType);
-        mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-        return mockSet.Object;
+        // Arrange
+        var client = new Clients { Id = 3, Name = "Thiago", Age = 20, Email = "thiago@t.com" };
+        var options = new DbContextOptionsBuilder<DataContext>()
+            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .Options;
+
+        using (var context = new DataContext(options))
+        {
+            var clientService = new ClientService(context);
+
+            // Act
+            var result = await clientService.CreateClient(client);
+
+            // Assert
+            Assert.Equal(1, result);
+        }
     }
 }

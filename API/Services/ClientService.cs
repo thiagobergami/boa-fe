@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// <copyright file="ClientService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -8,39 +10,40 @@ namespace API.Services;
 
 public class ClientService
 {
-    private readonly DataContext _context;
+    private readonly DataContext context;
+
     public ClientService(DataContext context)
     {
-        _context = context;
+        this.context = context;
     }
 
     public async Task<ActionResult<IEnumerable<Clients>>> ListAllClients()
     {
-        return await _context.Clients.ToListAsync();
+        return await this.context.Clients.ToListAsync();
     }
 
     public async Task<Clients> FindClientById(int id)
     {
-        var client = await _context.Clients.FindAsync(id);
+        var client = await this.context.Clients.FindAsync(id);
         return client;
     }
 
     public async Task<int> CreateClient(Clients client)
     {
-        _context.Clients.Add(client);
-        return await _context.SaveChangesAsync();
+        this.context.Clients.Add(client);
+        return await this.context.SaveChangesAsync();
     }
 
     public async Task<int> UpdateClient(Clients updatedClient)
     {
         updatedClient.UpdatedAt = DateTime.UtcNow;
-        _context.Entry(updatedClient).State = EntityState.Modified;
-        return await _context.SaveChangesAsync();
+        this.context.Entry(updatedClient).State = EntityState.Modified;
+        return await this.context.SaveChangesAsync();
     }
 
     public async Task<int> DeleteClient(Clients client)
     {
-        _context.Clients.Remove(client);
-        return await _context.SaveChangesAsync();
+        this.context.Clients.Remove(client);
+        return await this.context.SaveChangesAsync();
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Globalization;
+﻿// <copyright file="UnitsController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.Globalization;
 using API.DTO;
 using API.Entities;
 using API.Services;
@@ -10,62 +14,60 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class UnitsController : ControllerBase
 {
-    private readonly UnitsService _service;
-    private readonly ClientService _clientsService;
+    private readonly UnitsService service;
+    private readonly ClientService clientsService;
+
     public UnitsController(UnitsService service, ClientService clientService)
     {
-        _service = service;
-        _clientsService = clientService;
+        this.service = service;
+        this.clientsService = clientService;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetUnits()
     {
-        var units = await _service.GetAllUnits();
-        return Ok(units);
+        var units = await this.service.GetAllUnits();
+        return this.Ok(units);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateUnit([FromBody] Units unit)
     {
-        if (!ModelState.IsValid)
+        if (!this.ModelState.IsValid)
         {
-            return BadRequest(ModelState);
+            return this.BadRequest(this.ModelState);
         }
 
-        var createdUnit = await _service.CreateUnit(unit);
+        var createdUnit = await this.service.CreateUnit(unit);
 
-        return CreatedAtAction(nameof(CreateUnit), new { id = createdUnit.Id }, createdUnit);
+        return this.CreatedAtAction(nameof(this.CreateUnit), new { id = createdUnit.Id }, createdUnit);
     }
 
     [HttpPost("{id}/rent-unit")]
-    public async Task<IActionResult> RentUnit(int id, [FromBody] UpdateTenantInfoDTO TenantClient)
+    public async Task<IActionResult> RentUnit(int id, [FromBody] UpdateTenantInfoDTO tenantClient)
     {
-        var unitExist = await _service.GetUnitById(id);
-        var clientExist = await _clientsService.FindClientById(TenantClient.TenantClientId);
+        var unitExist = await this.service.GetUnitById(id);
+        var clientExist = await this.clientsService.FindClientById(tenantClient.TenantClientId);
 
         if (unitExist == null || clientExist == null)
         {
-            return NotFound("Not found");
+            return this.NotFound("Not found");
         }
 
-        unitExist.TenantStartedAt = DateTime.ParseExact(TenantClient.TenantStartedAt, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        unitExist.TenantFinishedAt = DateTime.ParseExact(TenantClient.TenantFinishedAt, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        unitExist.TenantClientId = TenantClient.TenantClientId;
+        unitExist.TenantStartedAt = DateTime.ParseExact(tenantClient.TenantStartedAt, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        unitExist.TenantFinishedAt = DateTime.ParseExact(tenantClient.TenantFinishedAt, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        unitExist.TenantClientId = tenantClient.TenantClientId;
 
-        var rentUnit = await _service.RentUnit(unitExist);
+        var rentUnit = await this.service.RentUnit(unitExist);
 
         if (rentUnit > 0)
         {
-            //That could be a DTO
-            return Created($"Unit {id} Rented with success", null);
+            // That could be a DTO
+            return this.Created($"Unit {id} Rented with success", null);
         }
         else
         {
-            return BadRequest("Failed to create Maintenance");
+            return this.BadRequest("Failed to create Maintenance");
         }
-
-
     }
-
 }

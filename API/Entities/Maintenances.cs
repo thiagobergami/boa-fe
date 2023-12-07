@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// <copyright file="Maintenances.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -10,7 +14,7 @@ public class Maintenances
 
     [Required]
     public int UnitID { get; set; }
-    
+
     [JsonIgnore]
     public Units Unity { get; set; }
 
@@ -24,5 +28,4 @@ public class Maintenances
 
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
-
 }

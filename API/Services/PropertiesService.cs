@@ -1,4 +1,8 @@
-﻿using API.Data;
+﻿// <copyright file="PropertiesService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using API.Data;
 using API.DTO;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -7,17 +11,17 @@ namespace API.Services;
 
 public class PropertiesService
 {
-    private readonly DataContext _context;
+    private readonly DataContext context;
 
     public PropertiesService(DataContext context)
     {
-        _context = context;
+        this.context = context;
     }
 
-    public async Task<List<int>> GetUnitByClientId(int ClientId)
+    public async Task<List<int>> GetUnitByClientId(int clientId)
     {
-        var units = await _context.Properties
-            .Where(p => p.ClientId == ClientId)
+        var units = await this.context.Properties
+            .Where(p => p.ClientId == clientId)
             .Select(p => p.UnitId)
             .ToListAsync();
 
@@ -33,11 +37,11 @@ public class PropertiesService
                 ClientId = property.ClientId,
                 UnitId = property.UnitId,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
             };
 
-            _context.Properties.Add(properties);
-            return await _context.SaveChangesAsync();
+            this.context.Properties.Add(properties);
+            return await this.context.SaveChangesAsync();
         }
         catch (Exception ex)
         {

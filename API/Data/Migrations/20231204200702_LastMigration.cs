@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿// <copyright file="20231204200702_LastMigration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 #nullable disable
 
 namespace API.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     /// <inheritdoc />
     public partial class LastMigration : Migration
     {
@@ -98,18 +102,18 @@ namespace API.Data.Migrations
                 oldType: "int",
                 oldNullable: true);
 
-           /*  migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Properties");
+            /*  migrationBuilder.DropColumn(
+                 name: "Id",
+                 table: "Properties");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "Properties",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int")
-                .OldAnnotation("SqlServer:Identity", "1, 1"); */
+             migrationBuilder.AlterColumn<int>(
+                 name: "Id",
+                 table: "Properties",
+                 type: "int",
+                 nullable: false,
+                 oldClrType: typeof(int),
+                 oldType: "int")
+                 .OldAnnotation("SqlServer:Identity", "1, 1"); */
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Properties",

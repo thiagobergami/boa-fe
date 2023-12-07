@@ -1,11 +1,16 @@
-﻿using API.Entities;
+﻿// <copyright file="DataContext.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using API.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions options) : base(options)
+    public DataContext(DbContextOptions options)
+        : base(options)
     {
     }
 
@@ -13,10 +18,15 @@ public class DataContext : DbContext
     {
         optionsBuilder.LogTo(Console.WriteLine);
     }
+
     public DbSet<Clients> Clients { get; set; }
+
     public DbSet<Units> Units { get; set; }
+
     public DbSet<Condominiums> Condominiums { get; set; }
+
     public DbSet<Maintenances> Maintenances { get; set; }
+
     public DbSet<Properties> Properties { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
